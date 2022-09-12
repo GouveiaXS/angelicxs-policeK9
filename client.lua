@@ -220,7 +220,7 @@ RegisterNetEvent('angelicxs-k9script:dogactions', function()
 		while DoesEntityExist(Dog) and Follow do
 			local Player = PlayerPedId()
 			local Sleep = 1000
-			if IsPedInAnyVehicle(Player, false) then
+						if IsPedInAnyVehicle(Player, false) then
 				local Vehicle = GetVehiclePedIsIn(Player, false)
 				if IsVehicleSeatAccessible(Dog, Vehicle, 1, true, true) then
 					inVehicle = true
@@ -237,13 +237,17 @@ RegisterNetEvent('angelicxs-k9script:dogactions', function()
 				end
 				while inVehicle do
 					if not IsPedInAnyVehicle(Player, false) then
+						Wait(500)
 						inVehicle = false
-						local DogCoords = GetEntityCoords(Vehicle)
-                     --   TaskLeaveVehicle(Dog, Vehicle, 16)
-						Wait(200)
-                        SetEntityCoords(Dog,DogCoords.x, DogCoords.y+2, DogCoords.z-1)
+						local DogCoords = GetEntityCoords(Player)
+						local DogHP = GetEntityMaxHealth(Dog)
+						--TaskLeaveVehicle(Dog, Vehicle,256)
+                       	SetEntityCoords(Dog,DogCoords.x, DogCoords.y+1.5, DogCoords.z-0.8)
+						Wait(100)
+						PlaceObjectOnGroundProperly(Dog)
+						SetEntityHealth(Dog, DogHP)
 					end
-					Wait(500)
+					Wait(750)
 				end
 			end
 			Wait(Sleep)
