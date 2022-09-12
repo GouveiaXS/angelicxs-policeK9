@@ -225,6 +225,13 @@ RegisterNetEvent('angelicxs-k9script:dogactions', function()
 				if IsVehicleSeatAccessible(Dog, Vehicle, 1, true, true) then
 					inVehicle = true
 					TaskEnterVehicle(Dog, Vehicle, 2000, 1, 2, 1, 0)
+					Wait(4000)
+					TaskWarpPedIntoVehicle(Dog, Vehicle, 1)
+				elseif IsVehicleSeatAccessible(Dog, Vehicle, 2, true, true) then
+					inVehicle = true
+					TaskEnterVehicle(Dog, Vehicle, 2000, 1, 2, 1, 0)
+					Wait(4000)
+					TaskWarpPedIntoVehicle(Dog, Vehicle, 2)
 				else
 					AnimationSitDog()
 				end
