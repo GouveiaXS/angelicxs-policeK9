@@ -233,8 +233,8 @@ RegisterNetEvent('angelicxs-k9script:dogactions', function()
 					Wait(4000)
 					TaskWarpPedIntoVehicle(Dog, Vehicle, 2)
 				else
+					Follow = false
 					AnimationSitDog()
-					Wait(5000)
 				end
 				while inVehicle do
 					if not IsPedInAnyVehicle(Player, false) and Follow then
