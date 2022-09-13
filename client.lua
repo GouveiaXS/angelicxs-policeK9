@@ -217,10 +217,10 @@ RegisterNetEvent('angelicxs-k9script:dogactions', function()
 	end)
 	
 	CreateThread(function()
-		while DoesEntityExist(Dog) and Follow do
+		while DoesEntityExist(Dog) do
 			local Player = PlayerPedId()
 			local Sleep = 1000
-						if IsPedInAnyVehicle(Player, false) then
+			if IsPedInAnyVehicle(Player, false) and Follow then
 				local Vehicle = GetVehiclePedIsIn(Player, false)
 				if IsVehicleSeatAccessible(Dog, Vehicle, 1, true, true) then
 					inVehicle = true
@@ -234,9 +234,10 @@ RegisterNetEvent('angelicxs-k9script:dogactions', function()
 					TaskWarpPedIntoVehicle(Dog, Vehicle, 2)
 				else
 					AnimationSitDog()
+					Wait(5000)
 				end
 				while inVehicle do
-					if not IsPedInAnyVehicle(Player, false) then
+					if not IsPedInAnyVehicle(Player, false) and Follow then
 						Wait(500)
 						inVehicle = false
 						local DogCoords = GetEntityCoords(Player)
