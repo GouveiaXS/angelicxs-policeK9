@@ -13,8 +13,10 @@ Config.StayCommand = 29 							-- B - Press this button to have the dog stay
 Config.ThirdEyeName = 'qb-target'					-- Name of the third eye system you use
 Config.K9Kennel = vector3(453.94, -990.0, 30.69)	-- Location of where police can pull out a K9
 Config.LEOJobName = 'police'						-- Name of police job that can pull out K9
-Config.JobRestriction = true						-- If true, forces police to be a certain rank or higher to pull out a K9
+Config.JobRestriction = true						-- If true, only allows police of a certain rank or higher to pull out a K9
 Config.JobRank = 3									-- If Config.JobRestriction = true, then sets what minimum rank a police officer must be to pull out a K9
+Config.ItemRestriction = false						-- If true, will only allow anyone with the item to spawn K9 (can be used with Config.JobRestriction to only let police with a certain item spawn K9)
+Config.AllowedItemList = {'itemnamelisthere'}		-- If Config.ItemRestriction = true, the list of items that will allow a K9 to spawn
 
 Config.SearchableItems = {
 	'aluminumoxide',
@@ -73,6 +75,8 @@ Config.LangType = {
 Config.Lang = {
 	['no_dog'] = 'You need a K9 out to search with a dog.',
 	['no_cop'] = 'You are not a law enforcement officer!',
-	['low_rank'] = 'You need a to be a higher rank!',
+	['low_rank'] = 'You need a to be a higher rank to request a police K9!',
+	['no_item'] = 'You do not have the appropriate items to request a police K9!',
+	['miss_reqs'] = 'You are missing the requirements to grab a police K9!',
 
 }
