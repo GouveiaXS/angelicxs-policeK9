@@ -93,13 +93,41 @@ CreateThread(function()
 end)
 
 RegisterNetEvent('angelicxs-k9script:jobchecker', function()
-	if Config.JobRestriction then
-		if PlayerJob == Config.LEOJobName and PlayerGrade >= Config.JobRank then
+	if Config.JobRestriction or Config.ItemRestriction then
+		local hasItem = false
+		local hasJob = false
+		local hasRank = false
+		local allow = false
+		if Config.ItemRestriction then
+			hasItem = Search()
+		end
+		if Config.JobRestriction then
+			hasJob = JobCheck()
+			hasRank = RankCheck()
+		end
+		if Config.ItemRestriction and Config.JobRestriction then
+			if hasItem and hasJob and hasRank then
+				allow = true
+			else
+				TriggerEvent('angelicxs-k9scipt:Notify', Config.Lang['miss_reqs'], Config.LangType['error'])
+			end
+		elseif Config.ItemRestriction then
+			if hasItem then
+				allow = true
+			else
+				TriggerEvent('angelicxs-k9scipt:Notify', Config.Lang['no_item'], Config.LangType['error'])
+			end
+		elseif Config.JobRestriction then
+			if hasJob and hasRank then
+				allow = true
+			elseif hasJob and not hasRank then
+				TriggerEvent('angelicxs-k9scipt:Notify', Config.Lang['low_rank'], Config.LangType['error'])
+			else
+				TriggerEvent('angelicxs-k9scipt:Notify', Config.Lang['no_cop'], Config.LangType['error'])
+			end
+		end
+		if allow then
 			TriggerEvent("angelicxs-k9script:dogspawn")
-		elseif PlayerJob == Config.LEOJobName and PlayerGrade < Config.JobRank then
-			TriggerEvent('angelicxs-k9scipt:Notify', Config.Lang['low_rank'], Config.LangType['error'])
-		else
-			TriggerEvent('angelicxs-k9scipt:Notify', Config.Lang['no_cop'], Config.LangType['error'])
 		end
 	else
 		TriggerEvent('angelicxs-k9script:dogspawn')
@@ -332,7 +360,6 @@ RegisterNetEvent('angelicxs-k9script:searching', function(target,entity)
         Wait(0)
     end 
     Wait(1000)
-	print(hasItem)
     if hasItem then
         TaskTurnPedToFaceEntity(Dog,entity,-1)
         AnimationSitDog()
@@ -370,6 +397,50 @@ function AnimationLayDog()
         Wait(10)
     end
     TaskPlayAnim(Dog,'creatures@rottweiler@amb@sleep_in_kennel@','sleep_in_kennel', 8.0, 8.0, -1, 1, 0, 0, 0, 0)
+end
+
+function Search()
+	local hasItem = false
+	if Config.UseESX then
+		PlayerData = ESX.GetPlayerData()
+		for i = 1, #Config.AllowedItemList, 1 do
+			for k, v in ipairs(PlayerData.inventory) do
+				if v.name == Config.AllowedItemList[i] and v.count > 0 then
+					hasItem = true
+					break
+				end
+			end
+		end
+	elseif Config.UseQBCore then
+		PlayerData = QBCore.Functions.GetPlayerData()
+		for i = 1, #Config.AllowedItemList, 1 do
+			for slot, item in pairs(PlayerData.items) do
+				if PlayerData.items[slot] then
+					if item.name == Config.AllowedItemList[i] then
+						hasItem = true
+						break
+					end
+				end
+			end
+		end
+	end
+	return hasItem
+end
+
+function JobCheck()
+	if PlayerJob == Config.LEOJobName then
+		return true
+	else
+		return false
+	end 
+end
+
+function RankCheck()
+	if PlayerGrade >= Config.JobRank then
+		return true
+	else
+		return false
+	end 
 end
 
 AddEventHandler('onResourceStop', function(resource)
