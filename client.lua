@@ -69,13 +69,13 @@ CreateThread(function()
             PlayerGrade = job.grade.level
         end)
     end
-	for location, terminal in pairs (Config.K9Kennel) do
-		exports[Config.ThirdEyeName]:AddBoxZone('K9Kennel', terminal, 3, 3, {
+	for i=1, #Config.K9Kennel, 1 do
+		exports[Config.ThirdEyeName]:AddBoxZone([i]..'K9Kennel', Config.K9Kennel[i], 3, 3, {
 			name = 'K9Kennel',
 			heading = 151.91,
 			debugPoly = false,
-			minZ = terminal.z - 1.5,
-			maxZ = terminal.z + 1.5,
+			minZ = Config.K9Kennel[i].z - 1.5,
+			maxZ = Config.K9Kennel[i].z + 1.5,
 		},
 		{
 			options = {
