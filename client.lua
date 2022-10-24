@@ -69,26 +69,27 @@ CreateThread(function()
             PlayerGrade = job.grade.level
         end)
     end
-	exports[Config.ThirdEyeName]:AddBoxZone('K9Kennel', Config.K9Kennel, 3, 3, {
-		name = 'K9Kennel',
-		heading = 151.91,
-		debugPoly = false,
-		minZ = Config.K9Kennel.z - 1.5,
-		maxZ = Config.K9Kennel.z + 1.5,
-	},
-	{
-		options = {
-			{
-				icon = "fas fa-hand-point-up",
-				label = "Get/Return K9",
-				action = function(entity)
-					TriggerEvent('angelicxs-k9script:jobchecker')
-				end,
-			},
+	for location, terminal in pairs (Config.K9Kennel) do
+		exports[Config.ThirdEyeName]:AddBoxZone('K9Kennel', terminal, 3, 3, {
+			name = 'K9Kennel',
+			heading = 151.91,
+			debugPoly = false,
+			minZ = terminal.z - 1.5,
+			maxZ = terminal.z + 1.5,
 		},
-		job = Config.LEOJobName,
-		distance = 1.5 
-	})
+		{
+			options = {
+				{
+					icon = "fas fa-hand-point-up",
+					label = "Get/Return K9",
+					action = function(entity)
+						TriggerEvent('angelicxs-k9script:jobchecker')
+					end,
+				},
+			},
+			distance = 1.5 
+		})
+	end
 
 end)
 
