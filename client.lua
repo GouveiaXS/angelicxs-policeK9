@@ -70,8 +70,8 @@ CreateThread(function()
         end)
     end
 	for i=1, #Config.K9Kennel, 1 do
-		exports[Config.ThirdEyeName]:AddBoxZone([i]..'K9Kennel', Config.K9Kennel[i], 3, 3, {
-			name = 'K9Kennel',
+		exports[Config.ThirdEyeName]:AddBoxZone(Config.K9Kennel[i]..'K9Kennel', Config.K9Kennel[i], 3, 3, {
+			name = Config.K9Kennel[i]..'K9Kennel',
 			heading = 151.91,
 			debugPoly = false,
 			minZ = Config.K9Kennel[i].z - 1.5,
