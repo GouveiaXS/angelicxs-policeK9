@@ -428,11 +428,12 @@ function Search()
 end
 
 function JobCheck()
-	if PlayerJob == Config.LEOJobName then
-		return true
-	else
-		return false
-	end 
+	for i = 1, #Config.LEOJobName do
+		if PlayerJob == Config.LEOJobName[i] then
+			return true
+		end
+	end
+	return false
 end
 
 function RankCheck()
