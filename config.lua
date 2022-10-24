@@ -11,7 +11,9 @@ Config.FollowCommand = 23 							-- F - Press this button to have the dog follow
 Config.StayCommand = 29 							-- B - Press this button to have the dog stay
 
 Config.ThirdEyeName = 'qb-target'					-- Name of the third eye system you use
-Config.K9Kennel = vector3(453.94, -990.0, 30.69)	-- Location of where police can pull out a K9
+Config.K9Kennel = {									-- Location of where police can pull out a K9
+	vector3(453.94, -990.0, 30.69),
+}
 Config.LEOJobName = {'police'}						-- Name of police job that can pull out K9
 Config.JobRestriction = true						-- If true, only allows police of a certain rank or higher to pull out a K9
 Config.JobRank = 3									-- If Config.JobRestriction = true, then sets what minimum rank a police officer must be to pull out a K9
