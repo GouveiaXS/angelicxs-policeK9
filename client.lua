@@ -23,15 +23,7 @@ end)
 CreateThread(function()
 
     if Config.UseESX then
-        while ESX == nil do
-            TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
-            Wait(0)
-        end
-    
-        while not ESX.IsPlayerLoaded() do
-            Wait(100)
-        end
-    
+        ESX = exports["es_extended"]:getSharedObject()
         PlayerData = ESX.GetPlayerData()
         CreateThread(function()
             while true do
