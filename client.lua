@@ -65,25 +65,45 @@ CreateThread(function()
         end)
     end
 	for i=1, #Config.K9Kennel, 1 do
-		exports[Config.ThirdEyeName]:AddBoxZone(Config.K9Kennel[i]..'K9Kennel', Config.K9Kennel[i], 3, 3, {
-			name = Config.K9Kennel[i]..'K9Kennel',
-			heading = 151.91,
-			debugPoly = false,
-			minZ = Config.K9Kennel[i].z - 1.5,
-			maxZ = Config.K9Kennel[i].z + 1.5,
-		},
-		{
-			options = {
-				{
-					icon = "fas fa-hand-point-up",
-					label = "Get/Return K9",
-					action = function(entity)
-						TriggerEvent('angelicxs-k9script:jobchecker')
-					end,
+		if Config.ThirdEyeName == 'ox_target' then
+			exports.ox_target:addBoxZone({
+				name = Config.K9Kennel[i]..'K9Kennel',
+				coords = {x = Config.K9Kennel[i].x, y = Config.K9Kennel[i].y, z = Config.K9Kennel[i].z},
+				dimensions = {width = 3.0, length = 3.0},
+				heading = 151.91,
+				minZ = Config.K9Kennel[i].z - 1.5,
+				maxZ = Config.K9Kennel[i].z + 1.5,
+				debugPoly = false,
+				options = {
+					{
+						event = 'angelicxs-k9script:jobchecker',
+						icon = 'fas fa-hand-point-up',
+						label = Config.Lang['get_k9'],
+					},
 				},
+				distance = 1.5,
+			})
+		else
+			exports[Config.ThirdEyeName]:AddBoxZone(Config.K9Kennel[i]..'K9Kennel', Config.K9Kennel[i], 3, 3, {
+				name = Config.K9Kennel[i]..'K9Kennel',
+				heading = 151.91,
+				debugPoly = false,
+				minZ = Config.K9Kennel[i].z - 1.5,
+				maxZ = Config.K9Kennel[i].z + 1.5,
 			},
-			distance = 1.5 
-		})
+			{
+				options = {
+					{
+						icon = "fas fa-hand-point-up",
+						label = Config.Lang['get_k9'],
+						action = function(entity)
+							TriggerEvent('angelicxs-k9script:jobchecker')
+						end,
+					},
+				},
+				distance = 1.5 
+			})
+		end
 	end
 
 end)
@@ -139,6 +159,8 @@ RegisterNetEvent('angelicxs-k9script:dogspawn', function()
 		local plyCoords = GetOffsetFromEntityInWorldCoords(Player, 0.0, 1.0, 0.0)
 		Dog = CreatePed(3, hash, PlayerCoords.x, (PlayerCoords.y+2), (PlayerCoords.z-1), PlayerHeading, true, true)
 		TaskSetBlockingOfNonTemporaryEvents(Dog, true)
+		SetEntityMaxHealth(Dog, Config.DogMaxHp)
+		SetEntityHealth(Dog, Config.DogMaxHp)
 		SetEntityAsMissionEntity(Dog)
 		SetPedCombatRange(Dog, 2)
 		SetPedFleeAttributes(Dog, 0, 0)
@@ -149,16 +171,27 @@ RegisterNetEvent('angelicxs-k9script:dogspawn', function()
         SetPedCombatAttributes(Dog, 46, true)
 		TriggerEvent('angelicxs-k9script:dogactions')
 		if Config.UseQBCore then -- If you manage to get the ESX server side to properly search vehicles (currently commented out) this export can be re added to ESX users.
-			exports[Config.ThirdEyeName]:AddGlobalVehicle({
-				options = {
+			if Config.ThirdEyeName == 'ox_target' then
+				exports.ox_target:addGlobalVehicle({
 					{
-						event = "angelicxs-k9script:searchingcar",
-						icon = "fas fa-arrow-up",
-						label = "Search Vehicle with K9",
-						distance = 2
+						name = 'An:gelicXS:K9SearchCar',
+						event = 'angelicxs-k9script:searchingcar',
+						icon = 'fas fa-arrow-up',
+						label = Config.Lang['search_car_k9'],
+					}
+				})
+			else
+				exports[Config.ThirdEyeName]:AddGlobalVehicle({
+					options = {
+						{
+							event = "angelicxs-k9script:searchingcar",
+							icon = "fas fa-arrow-up",
+							label = Config.Lang['search_car_k9'],
+							distance = 2
+						},
 					},
-				},
-			})
+				})
+			end
 		end
 	else
 		DeleteEntity(Dog)
