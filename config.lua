@@ -14,6 +14,7 @@ Config.ThirdEyeName = 'qb-target'					-- Name of the third eye system you use
 Config.K9Kennel = {									-- Location of where police can pull out a K9
 	vector3(453.94, -990.0, 30.69),
 }
+Config.DogMaxHp = 200								-- Sets Dog's max hp (MAX IS 200)
 Config.LEOJobName = {'police'}						-- Name of police job that can pull out K9
 Config.JobRestriction = true						-- If true, only allows police of a certain rank or higher to pull out a K9
 Config.JobRank = 3									-- If Config.JobRestriction = true, then sets what minimum rank a police officer must be to pull out a K9
@@ -80,5 +81,8 @@ Config.Lang = {
 	['low_rank'] = 'You need a to be a higher rank to request a police K9!',
 	['no_item'] = 'You do not have the appropriate items to request a police K9!',
 	['miss_reqs'] = 'You are missing the requirements to grab a police K9!',
+	['get_k9'] = 'Get/Return K9',
+	['search_car_k9'] = 'Search Vehicle with K9',
+
 
 }
