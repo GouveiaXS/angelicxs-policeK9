@@ -79,9 +79,9 @@ CreateThread(function()
 						event = 'angelicxs-k9script:jobchecker',
 						icon = 'fas fa-hand-point-up',
 						label = Config.Lang['get_k9'],
+						distance = 1.5,
 					},
 				},
-				distance = 1.5,
 			})
 		else
 			exports[Config.ThirdEyeName]:AddBoxZone(Config.K9Kennel[i]..'K9Kennel', Config.K9Kennel[i], 3, 3, {
