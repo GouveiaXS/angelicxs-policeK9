@@ -170,33 +170,41 @@ RegisterNetEvent('angelicxs-k9script:dogspawn', function()
 		SetPedCombatAttributes(Dog, 5, true)
         SetPedCombatAttributes(Dog, 46, true)
 		TriggerEvent('angelicxs-k9script:dogactions')
-		if Config.UseQBCore then -- If you manage to get the ESX server side to properly search vehicles (currently commented out) this export can be re added to ESX users.
-			if Config.ThirdEyeName == 'ox_target' then
-				exports.ox_target:addGlobalVehicle({
-					{
-						name = 'An:gelicXS:K9SearchCar',
-						event = 'angelicxs-k9script:searchingcar',
-						icon = 'fas fa-arrow-up',
-						label = Config.Lang['search_car_k9'],
-					}
-				})
-			else
-				exports[Config.ThirdEyeName]:AddGlobalVehicle({
-					options = {
-						{
-							event = "angelicxs-k9script:searchingcar",
-							icon = "fas fa-arrow-up",
-							label = Config.Lang['search_car_k9'],
-							distance = 2
-						},
-					},
-				})
-			end
-		end
 	else
 		DeleteEntity(Dog)
 	end
 end)
+
+if Config.UseQBCore then -- If you manage to get the ESX server side to properly search vehicles (currently commented out) this export can be re added to ESX users.
+	if Config.ThirdEyeName == 'ox_target' then
+		exports.ox_target:addGlobalVehicle({
+			{
+				name = 'An:gelicXS:K9SearchCar',
+				event = 'angelicxs-k9script:searchingcar',
+				icon = 'fas fa-arrow-up',
+				label = Config.Lang['search_car_k9'],
+				canInteract = function(entity, distance, coords, name, bone)
+					return DoesEntityExist(Dog)
+				end
+			}
+		})
+	else
+		exports[Config.ThirdEyeName]:AddGlobalVehicle({
+			options = {
+				{
+					event = "angelicxs-k9script:searchingcar",
+					icon = "fas fa-arrow-up",
+					label = Config.Lang['search_car_k9'],
+					distance = 2,
+					canInteract = function(entity, distance, data) -- This will check if you can interact with it, this won't show up if it returns false, this is OPTIONAL
+						if DoesEntityExist(Dog) then return true end -- This will return false if the entity interacted with is a player and otherwise returns true
+						return false
+					end,
+				},
+			},
+		})
+	end
+end
 
 
 RegisterNetEvent('angelicxs-k9script:searchingcar', function()
