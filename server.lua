@@ -20,13 +20,11 @@ if Config.UseESX then
     end)
     ESX.RegisterServerCallback('angelicxs-k9script:server:searchcar:ESX', function(source, cb, plate)
         local xPlayer = ESX.GetPlayerFromId(source)
-        local identifier = xPlayer.getIdentifier()
         local search = true
         local found = false
         print('Vehicle ' .. plate .. ' is being searched by a dog.')
-        MySQL.Async.fetchAll('SELECT glovebox FROM owned_vehicles WHERE plate = @plate AND owner = @owner', {
+        MySQL.Async.fetchAll('SELECT glovebox FROM owned_vehicles WHERE plate = @plate, {
             ['@plate'] = plate,
-            ['@owner'] = identifier
         }, function(result)
             if result and #result > 0 then
                 local trunkItems = json.decode(result[1].glovebox)
