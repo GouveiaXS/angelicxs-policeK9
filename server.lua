@@ -1,4 +1,4 @@
- ESX = nil
+ESX = nil
 QBcore = nil
 
 if Config.UseESX then
@@ -18,40 +18,43 @@ if Config.UseESX then
             end
         end
     end)
-    -- The below commented out field was my attempt to get the ESX framework to search player's vehicles. Unfortunately I was unable to do so.
---[[     ESX.RegisterServerCallback('angelicxs-k9script:server:searchcar:ESX', function(source, cb, plate)
-        print('Vehicle '..plate..' is being searched by a dog.')
-        MySQL.Async.fetchAll('SELECT trunk FROM owned_vehicles WHERE plate = @plate', {
+    ESX.RegisterServerCallback('angelicxs-k9script:server:searchcar:ESX', function(source, cb, plate)
+        local xPlayer = ESX.GetPlayerFromId(source)
+        local identifier = xPlayer.getIdentifier()
+        local search = true
+        local found = false
+        print('Vehicle ' .. plate .. ' is being searched by a dog.')
+        MySQL.Async.fetchAll('SELECT glovebox FROM owned_vehicles WHERE plate = @plate AND owner = @owner', {
             ['@plate'] = plate,
-            }, function (result)
-            if result then
-                local trunkItems = json.decode(result)
+            ['@owner'] = identifier
+        }, function(result)
+            if result and #result > 0 then
+                local trunkItems = json.decode(result[1].glovebox)
                 if trunkItems then
                     for k, item in pairs(trunkItems) do
-                        if item == Config.SearchableItems[i] then
-                            cb(true)
-                            break
+                        for i = 1, #Config.SearchableItems, 1 do
+                            if item.name == Config.SearchableItems[i] then
+                                found = true
+                                break
+                            end
+                        end
+                    end
+                end
+                trunkItems = json.decode(result[1].trunk)
+                if trunkItems and not found then
+                    for k, item in pairs(trunkItems) do
+                        for i = 1, #Config.SearchableItems, 1 do
+                            if item.name == Config.SearchableItems[i] then
+                                found = true
+                                break
+                            end
                         end
                     end
                 end
             end
+            cb(found)
         end)
-        MySQL.Async.fetchAll('SELECT glovebox FROM owned_vehicles WHERE plate = @plate', {
-            ['@plate'] = plate,
-            }, function (result)
-            if result then
-                local trunkItems = json.decode(result)
-                if trunkItems then
-                    for k, item in pairs(trunkItems) do
-                        if item == Config.SearchableItems[i] then
-                            cb(true)
-                            break
-                        end
-                    end
-                end
-            end
-        end)
-    end) ]]
+    end)
 elseif Config.UseQBCore then
     QBCore.Functions.CreateCallback('angelicxs-k9script:server:search:QBCore', function(source, cb, target)
         local src = target
@@ -70,8 +73,11 @@ elseif Config.UseQBCore then
     end)
     QBCore.Functions.CreateCallback('angelicxs-k9script:server:searchcar:QBCore', function(source, cb, plate)
         print('Vehicle '..plate..' is being searched by a dog.')
-        local trunk = GetOwnedVehicleGloveboxItems(plate)
-        local glovebox = GetOwnedVehicleItems(plate)
+        local found, glovebox, trunk = false, false, false
+        glovebox = GetOwnedVehicleGloveboxItems(plate)
+        if not glovebox then
+            trunk = GetOwnedVehicleItems(plate)
+        end
         cb(trunk or glovebox)
     end)
     function GetOwnedVehicleGloveboxItems(plate)
