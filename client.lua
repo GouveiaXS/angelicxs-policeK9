@@ -178,8 +178,10 @@ RegisterNetEvent('angelicxs-k9script:jobchecker', function()
 end)
 
 RegisterNetEvent('angelicxs-k9script:dogspawn', function()
-	garbage, Relationship = AddRelationshipGroup('doggroup')
-	SetRelationshipBetweenGroups(0, Relationship, Relationship)
+	if not Relationship then
+		garbage, Relationship = AddRelationshipGroup('doggroup')
+		SetRelationshipBetweenGroups(0, Relationship, Relationship)
+	end
 	if not DoesEntityExist(Dog) then
 		local hash = HashGrabber('a_c_shepherd')
 		local Player = PlayerPedId()
