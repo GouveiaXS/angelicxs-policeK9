@@ -18,41 +18,40 @@ if Config.UseESX then
             end
         end
     end)
-    ESX.RegisterServerCallback('angelicxs-k9script:server:searchcar:ESX', function(source, cb, plate)
-        local xPlayer = ESX.GetPlayerFromId(source)
-        local search = true
-        local found = false
-        print('Vehicle ' .. plate .. ' is being searched by a dog.')
-        MySQL.Async.fetchAll('SELECT glovebox FROM owned_vehicles WHERE plate = @plate, {
-            ['@plate'] = plate,
-        }, function(result)
-            if result and #result > 0 then
-                local trunkItems = json.decode(result[1].glovebox)
-                if trunkItems then
-                    for k, item in pairs(trunkItems) do
-                        for i = 1, #Config.SearchableItems, 1 do
-                            if item.name == Config.SearchableItems[i] then
-                                found = true
-                                break
-                            end
-                        end
-                    end
-                end
-                trunkItems = json.decode(result[1].trunk)
-                if trunkItems and not found then
-                    for k, item in pairs(trunkItems) do
-                        for i = 1, #Config.SearchableItems, 1 do
-                            if item.name == Config.SearchableItems[i] then
-                                found = true
-                                break
-                            end
-                        end
-                    end
-                end
-            end
-            cb(found)
-        end)
-    end)
+	ESX.RegisterServerCallback('angelicxs-k9script:server:searchcar:ESX', function(source, cb, plate)
+	    local xPlayer = ESX.GetPlayerFromId(source)
+	    local search = true
+	    local found = false
+	    print('Vehicle ' .. plate .. ' is being searched by a dog.')
+	    MySQL.Async.fetchAll('SELECT glovebox FROM owned_vehicles WHERE plate = ?', {plate},
+	        function(result)
+	        if result and #result > 0 then
+	            local trunkItems = json.decode(result[1].glovebox)
+	            if trunkItems then
+	                for k, item in pairs(trunkItems) do
+	                    for i = 1, #Config.SearchableItems, 1 do
+	                        if item.name == Config.SearchableItems[i] then
+	                            found = true
+	                            break
+	                        end
+	                    end
+	                end
+	            end
+	            trunkItems = json.decode(result[1].trunk)
+	            if trunkItems and not found then
+	                for k, item in pairs(trunkItems) do
+	                    for i = 1, #Config.SearchableItems, 1 do
+	                        if item.name == Config.SearchableItems[i] then
+	                            found = true
+	                            break
+	                        end
+	                    end
+	                end
+	            end
+	        end
+	        cb(found)
+	    end)
+	end)
 elseif Config.UseQBCore then
     QBCore.Functions.CreateCallback('angelicxs-k9script:server:search:QBCore', function(source, cb, target)
         local src = target
