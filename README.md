@@ -15,9 +15,6 @@ Main functionality:
 * Follow
 * Job & Rank Lock
 * Third-Eye Spawn/Despawn
-
-
-** QBCORE ONLY **
 * Search player owned vehicles
 
 Buttons for commands can easily be swapped in the config.
