@@ -3,6 +3,13 @@ Config = {}
 Config.UseESX = true								-- Use ESX Framework
 Config.UseQBCore = false							-- Use QBCore Framework (Ignored if Config.UseESX = true)
 
+Config.UseCustomNotify = false				-- Use a custom notification script, must complete event below.
+-- Only complete this event if Config.UseCustomNotify is true; mythic_notification provided as an example
+RegisterNetEvent('angelicxs-k9scipt:CustomNotify')
+AddEventHandler('angelicxs-k9scipt:CustomNotify', function(message, type)
+    --exports.mythic_notify:SendAlert(type, message, 4000)
+end)
+
 -- https://docs.fivem.net/docs/game-references/controls/
 Config.SearchCommand = 38 							-- E - When aiming at a person, press this button to have the dog search them
 													-- To search a vehicle use your thirdeye on the vehicle
