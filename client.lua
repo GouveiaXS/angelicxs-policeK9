@@ -97,6 +97,19 @@ CreateThread(function()
 					end
 				}
 			})
+			exports.ox_target:addGlobalPlayer({
+				{ 
+					label = Config.Lang['search_person_k9'],
+					onSelect = function(entity)
+						StopAttack()
+						TriggerEvent('angelicxs-k9script:searching', tonumber(GetPlayerServerId(NetworkGetPlayerIndexFromPed(entity))), entity)
+					end,
+					canInteract = function(entity, distance, data)
+						if DoesEntityExist(Dog) then return true end
+						return false
+					end,
+				}
+			})
 		else
 			exports[Config.ThirdEyeName]:AddBoxZone(Config.K9Kennel[i]..'K9Kennel', Config.K9Kennel[i], 3, 3, {
 				name = Config.K9Kennel[i]..'K9Kennel',
@@ -130,6 +143,22 @@ CreateThread(function()
 						end,
 					},
 				},
+			})
+			exports[Config.ThirdEyeName]:AddGlobalPlayer({
+				options = {
+				  { 
+					label = Config.Lang['search_person_k9'],
+					action = function(entity)
+						StopAttack()
+						TriggerEvent('angelicxs-k9script:searching', tonumber(GetPlayerServerId(NetworkGetPlayerIndexFromPed(entity))), entity)
+					end,
+					canInteract = function(entity, distance, data)
+					  if DoesEntityExist(Dog) then return true end
+					  return false
+					end,
+				  }
+				},
+				distance = 2.5,
 			})
 		end
 	end
