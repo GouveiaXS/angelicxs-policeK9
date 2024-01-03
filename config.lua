@@ -90,6 +90,7 @@ Config.Lang = {
 	['miss_reqs'] = 'You are missing the requirements to grab a police K9!',
 	['get_k9'] = 'Get/Return K9',
 	['search_car_k9'] = 'Search Vehicle with K9',
+	['search_person_k9'] = 'Search Person with K9',
 
 
 }
