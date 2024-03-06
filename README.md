@@ -18,3 +18,36 @@ Main functionality:
 * Search player owned vehicles
 
 Buttons for commands can easily be swapped in the config.
+
+# Add following code in qb-inventory or ps-inventory /server.lua at bottom
+
+```Lua
+-- required for k9
+function getTrunkItems(plate)
+	if Trunks[plate] then
+		return Trunks[plate]
+	else
+		local result = MySQL.scalar.await('SELECT items FROM trunkitems WHERE plate = ?', {plate})
+		if not result then return false end
+		local data = {
+			items = json.decode(result)
+		}
+		return data
+	end
+end
+function getGloveboxItems(plate)
+	if Gloveboxes[plate] then
+		return Gloveboxes[plate]
+	else
+		local result = MySQL.scalar.await('SELECT items FROM gloveboxitems WHERE plate = ?', {plate})
+		if not result then return false end
+		local data = {
+			items = json.decode(result)
+		}
+		return data
+	end
+end
+exports("getGloveboxItems", getGloveboxItems)
+exports("getTrunkItems", getTrunkItems)
+-- required for k9
+```
