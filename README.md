@@ -19,7 +19,7 @@ Main functionality:
 
 Buttons for commands can easily be swapped in the config.
 
-# Add following code in qb-inventory or ps-inventory /server.lua at bottom
+# FOR QB-CORE Add following code in qb-inventory or ps-inventory /server.lua at bottom
 
 ```Lua
 -- required for k9
