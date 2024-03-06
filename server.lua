@@ -79,9 +79,9 @@ elseif Config.UseQBCore then
     end)
     function GetOwnedVehicleGloveboxItems(plate)
         local items = {}
-        local result = MySQL.Sync.fetchScalar('SELECT items FROM gloveboxitems WHERE plate = ?', {plate})
+        local result = exports["qb-inventory"]:getGloveboxItems(plate)
         if result then
-            local gloveboxItems = json.decode(result)
+            local gloveboxItems = result['items']
             if gloveboxItems then
                 for k, item in pairs(gloveboxItems) do
                     local itemInfo = QBCore.Shared.Items[item.name:lower()]
@@ -102,9 +102,9 @@ elseif Config.UseQBCore then
     end
     function GetOwnedVehicleItems(plate)
         local items = {}
-        local result = MySQL.Sync.fetchScalar('SELECT items FROM trunkitems WHERE plate = ?', {plate})
+        local result = exports["qb-inventory"]:getTrunkItems(plate)
         if result then
-            local trunkItems = json.decode(result)
+            local trunkItems = result['items']
             if trunkItems then
                 for k, item in pairs(trunkItems) do
                     local itemInfo = QBCore.Shared.Items[item.name:lower()]
