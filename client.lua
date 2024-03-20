@@ -287,26 +287,24 @@ RegisterNetEvent('angelicxs-k9script:dogactions', function()
 	end)
 	
 	CreateThread(function()
+		local Near1 = 0
 		while DoesEntityExist(Dog) do
-			local Sleep = 0
+			local Sleep = 1000
 			if Follow then
 				local Player = PlayerPedId()
 				local PlayerCoord = GetEntityCoords(Player)
 				local DogCoord = GetEntityCoords(Dog)
+				local Dist = #(PlayerCoord - DogCoord)
 				if not inVehicle then
-                    if #(PlayerCoord - DogCoord) >= 5 then
-                        TaskGoStraightToCoord(Dog, PlayerCoord, 30.0, -1, 0.0, 0.0)
-                    else
-                        if #(PlayerCoord - DogCoord) <= 1.5 then
-                            ClearPedTasks(Dog)
-						else
-							TaskGoStraightToCoord(Dog, PlayerCoord, 1.5, -1, 0.0, 0.0)
-                        end
-                    end
-                end
-				Sleep = 100
-			else
-				Sleep = 1000
+					local DogMove = IsPedWalking(Dog) or IsPedRunning(Dog) or IsPedSprinting(Dog)
+					if not DogMove then
+						ClearPedTasks(Dog)
+						TaskGoToEntity(Dog, Player, -1, 0.8, 8.0, 1073741824, 0)
+					elseif Near1 == Dist then
+						ClearPedTasks(Dog)
+					end
+				end
+				Near1 = Dist
 			end
 			Wait(Sleep)
 		end
