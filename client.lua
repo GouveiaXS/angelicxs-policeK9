@@ -102,7 +102,7 @@ CreateThread(function()
 					label = Config.Lang['search_person_k9'],
 					onSelect = function(entity)
 						StopAttack()
-						TriggerEvent('angelicxs-k9script:searching', tonumber(GetPlayerServerId(NetworkGetPlayerIndexFromPed(entity))), entity)
+						TriggerEvent('angelicxs-k9script:searching', tonumber(GetPlayerServerId(NetworkGetPlayerIndexFromPed(entity.entity))), entity.entity)
 					end,
 					canInteract = function(entity, distance, data)
 						if DoesEntityExist(Dog) then return true end
@@ -287,7 +287,7 @@ RegisterNetEvent('angelicxs-k9script:dogactions', function()
 	end)
 	
 	CreateThread(function()
-		local Near1 = 0
+		local CatchTimer = 3
 		while DoesEntityExist(Dog) do
 			local Sleep = 1000
 			if Follow then
@@ -296,15 +296,20 @@ RegisterNetEvent('angelicxs-k9script:dogactions', function()
 				local DogCoord = GetEntityCoords(Dog)
 				local Dist = #(PlayerCoord - DogCoord)
 				if not inVehicle then
-					local DogMove = IsPedWalking(Dog) or IsPedRunning(Dog) or IsPedSprinting(Dog)
-					if not DogMove then
+					--local DogMove = IsPedWalking(Dog) or IsPedRunning(Dog) or IsPedSprinting(Dog)
+					if Dist <= 1.0 and Dist >= -1.0 then
 						ClearPedTasks(Dog)
-						TaskGoToEntity(Dog, Player, -1, 0.8, 8.0, 1073741824, 0)
-					elseif Near1 == Dist then
-						ClearPedTasks(Dog)
+						CatchTimer = 3
+					else --if not DogMove then
+						if CatchTimer <= 0 then
+							Sleep = 50
+							TaskGoStraightToCoord(Dog, PlayerCoord, 3.0, -1, 0.0, 0.0)
+						else
+							TaskGoToEntity(Dog, Player, -1, 0.8, 8.0, 1073741824, 0)
+							CatchTimer = CatchTimer - 1
+						end
 					end
 				end
-				Near1 = Dist
 			end
 			Wait(Sleep)
 		end
